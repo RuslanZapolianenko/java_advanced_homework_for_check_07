@@ -70,7 +70,7 @@ public class Town {
 
             Element cityNameTag2 = doc.createElement("cityName");
             cityNameTag2.setTextContent("Киев _ 2");
-            cityNameTag2.setAttribute("size", "Big _ 2");
+          //  cityNameTag2.setAttribute("size", "Big _ 2");
             cityTeg2.appendChild(cityNameTag2);
 
             Element streetNameTag2 = doc.createElement("streetName");
@@ -117,6 +117,8 @@ public class Town {
                 boolean cityName = false;
                 boolean streetName = false;
                 boolean houseNumber = false;
+                boolean cityNameSize = false;
+                String attribString = "";
 
                 // Метод вызывается когда SAXParser "натыкается" на начало тэга
                 @Override
@@ -124,7 +126,10 @@ public class Town {
                     // Если тэг имеет имя name, то мы этот момент отмечаем - начался тэг name
                     if (qName.equalsIgnoreCase("cityName") ) {
 
-                        //флажок меняем на тру
+                        if(!attributes.equals("")){
+                            attribString =  (attributes.getValue("size"));
+                            cityNameSize = true;
+                        }
                         cityName = true;
                     }
 
@@ -145,8 +150,13 @@ public class Town {
                     // Если перед этим мы отметили, что имя тэга name - значит нам надо текст использовать.
                     if (cityName) {
                         System.out.println("city Name: " + new String(ch, start, length));
-
                         cityName = false;
+                    }
+
+                    if(cityNameSize){
+                        System.out.println("size City Name: " + attribString);
+                        cityNameSize = false;
+                        attribString = "";
                     }
 
                     if (streetName) {
